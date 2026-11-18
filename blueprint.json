@@ -1,0 +1,150 @@
+{
+  "manifestVersion": 1,
+  "id": "com.kubek.openmp.auto",
+  "name": "SA:MP (open.mp)",
+  "shortName": "SAMP",
+  "description": "Multiplayer server for GTA San Andreas (open.mp / SA:MP 0.3.7)",
+  "game": "gtasa",
+  "icon": "icon.png",
+  "author": { "name": "Rivero92" },
+  "version": "1.0.0",
+  "tags": ["gtasa", "samp", "openmp", "gta"],
+  "engines": { "kubek": ">=4.0.0" },
+  "platforms": ["linux"],
+  "runtime": { "kind": "native" },
+  "variables": [
+    {
+      "key": "GAME_VERSION",
+      "label": "Version",
+      "type": "enum",
+      "options": { "from": "versions" },
+      "rules": "required",
+      "userEditable": true
+    },
+    {
+      "key": "SERVER_NAME",
+      "label": "Server Name",
+      "type": "string",
+      "default": "open.mp server",
+      "rules": "required",
+      "userEditable": true
+    },
+    {
+      "key": "MAX_PLAYERS",
+      "label": "Max Players",
+      "type": "number",
+      "default": 50,
+      "rules": "required",
+      "userEditable": true
+    },
+    {
+      "key": "MAX_BOTS",
+      "label": "Max Bots",
+      "type": "number",
+      "default": 10,
+      "rules": "required",
+      "userEditable": true
+    },
+    {
+      "key": "LANGUAGE",
+      "label": "Language",
+      "type": "string",
+      "default": "Russian",
+      "userEditable": true
+    },
+    {
+      "key": "SERVER_PASSWORD",
+      "label": "Server Password",
+      "type": "string",
+      "default": "",
+      "userEditable": true
+    },
+    {
+      "key": "RCON_PASSWORD",
+      "label": "RCON Password",
+      "type": "secret",
+      "default": "KubekRcon_9281!",
+      "rules": "required",
+      "userEditable": true
+    },
+    {
+      "key": "ARTWORK_ENABLE",
+      "label": "Enable Artwork (Custom Models)",
+      "type": "boolean",
+      "default": false,
+      "userEditable": true
+    },
+    {
+      "key": "ANNOUNCE",
+      "label": "Announce Server",
+      "type": "boolean",
+      "default": false,
+      "userEditable": true
+    },
+    {
+      "key": "LAUNCH_ARGS",
+      "label": "Launch arguments",
+      "type": "string",
+      "default": "",
+      "userEditable": true
+    }
+  ],
+  "versions": {
+    "kind": "resolver",
+    "module": "versions.ts"
+  },
+  "install": {
+    "runIn": "host",
+    "steps": [
+      {
+        "type": "download",
+        "url": "{{DOWNLOAD_URL}}",
+        "dest": "openmp.tar.gz",
+        "unpack": true
+      },
+      {
+        "type": "chmod",
+        "path": "Server/omp-server",
+        "mode": "755"
+      },
+      {
+        "type": "writeFile",
+        "path": "Server/config.json",
+        "content": "{\n  \"announce\": {{ANNOUNCE}},\n  \"artwork\": {\n    \"cdn\": \"\",\n    \"enable\": {{ARTWORK_ENABLE}},\n    \"models_path\": \"models\",\n    \"port\": {{SERVER_PORT}},\n    \"show_crc_logs\": false,\n    \"web_server_bind\": \"\"\n  },\n  \"banners\": {\n    \"dark\": \"\",\n    \"light\": \"\"\n  },\n  \"chat_input_filter\": true,\n  \"discord\": {\n    \"invite\": \"\"\n  },\n  \"enable_query\": true,\n  \"game\": {\n    \"allow_interior_weapons\": true,\n    \"chat_radius\": 200.0,\n    \"death_drop_amount\": 0,\n    \"gravity\": 0.00800000037997961,\n    \"group_player_objects\": false,\n    \"lag_compensation_mode\": 1,\n    \"map\": \"\",\n    \"mode\": \"\",\n    \"nametag_draw_radius\": 70.0,\n    \"player_marker_draw_radius\": 250.0,\n    \"player_marker_mode\": 1,\n    \"time\": 12,\n    \"use_all_animations\": true,\n    \"use_chat_radius\": false,\n    \"use_entry_exit_markers\": true,\n    \"use_instagib\": false,\n    \"use_manual_engine_and_lights\": false,\n    \"use_nametag_los\": true,\n    \"use_nametags\": true,\n    \"use_player_marker_draw_radius\": false,\n    \"use_player_ped_anims\": false,\n    \"use_stunt_bonuses\": true,\n    \"use_vehicle_friendly_fire\": false,\n    \"use_zone_names\": false,\n    \"validate_animations\": true,\n    \"vehicle_respawn_time\": 10000,\n    \"weather\": 10\n  },\n  \"language\": \"{{LANGUAGE}}\",\n  \"logging\": {\n    \"enable\": true,\n    \"file\": \"log.txt\",\n    \"log_chat\": true,\n    \"log_connection_messages\": true,\n    \"log_cookies\": false,\n    \"log_deaths\": true,\n    \"log_queries\": false,\n    \"log_sqlite\": false,\n    \"log_sqlite_queries\": false,\n    \"timestamp_format\": \"[%Y-%m-%dT%H:%M:%S%z]\",\n    \"use_prefix\": true,\n    \"use_timestamp\": true\n  },\n  \"logo\": \"\",\n  \"max_bots\": {{MAX_BOTS}},\n  \"max_players\": {{MAX_PLAYERS}},\n  \"name\": \"{{SERVER_NAME}}\",\n  \"network\": {\n    \"acks_limit\": 3000,\n    \"aiming_sync_rate\": 30,\n    \"allow_037_clients\": true,\n    \"bind\": \"\",\n    \"cookie_reseed_time\": 300000,\n    \"grace_period\": 5000,\n    \"http_threads\": 50,\n    \"in_vehicle_sync_rate\": 30,\n    \"limits_ban_time\": 60000,\n    \"message_hole_limit\": 3000,\n    \"messages_limit\": 500,\n    \"minimum_connection_time\": 0,\n    \"minimum_send_bits_per_second\": 96000.0,\n    \"mtu\": 576,\n    \"multiplier\": 10,\n    \"on_foot_sync_rate\": 30,\n    \"player_marker_sync_rate\": 2500,\n    \"player_timeout\": 10000,\n    \"port\": {{SERVER_PORT}},\n    \"public_addr\": \"\",\n    \"stream_radius\": 200.0,\n    \"stream_rate\": 1000,\n    \"time_sync_rate\": 30000,\n    \"use_lan_mode\": false,\n    \"use_omp_encryption\": false\n  },\n  \"npc\": {\n    \"aim_sync_skip_update_limit\": 15,\n    \"aiming_sync_rate\": 30,\n    \"in_vehicle_sync_rate\": 30,\n    \"in_vehicle_sync_skip_update_limit\": 15,\n    \"on_foot_sync_rate\": 30,\n    \"on_foot_sync_skip_update_limit\": 15,\n    \"process_update_rate\": 50\n  },\n  \"password\": \"{{SERVER_PASSWORD}}\",\n  \"pawn\": {\n    \"legacy_plugins\": [],\n    \"main_scripts\": [\n      \"grandlarc 1\"\n    ],\n    \"side_scripts\": []\n  },\n  \"rcon\": {\n    \"allow_teleport\": false,\n    \"enable\": true,\n    \"password\": \"{{RCON_PASSWORD}}\"\n  },\n  \"sleep\": 5.0,\n  \"use_dyn_ticks\": true,\n  \"website\": \"open.mp\"\n}\n"
+      }
+    ]
+  },
+  "startup": {
+    "command": "cd Server && mkdir -p gamemodes filterscripts scriptfiles plugins components && ln -sf ../config.json scriptfiles/config.json && sed -i -e 's|\\r||g' -e 's|\"name\": \".*\"|\"name\": \"{{SERVER_NAME}}\"|' -e 's|\"max_players\": [0-9]*|\"max_players\": {{MAX_PLAYERS}}|' -e 's|\"max_bots\": [0-9]*|\"max_bots\": {{MAX_BOTS}}|' -e 's|\"language\": \".*\"|\"language\": \"{{LANGUAGE}}\"|' -e 's|^  \"password\": \".*\"|  \"password\": \"{{SERVER_PASSWORD}}\"|' -e 's|^    \"password\": \".*\"|    \"password\": \"{{RCON_PASSWORD}}\"|' -e '/\"network\": {/,/}/ s|\"port\": [0-9]*|\"port\": {{SERVER_PORT}}|' -e '/\"artwork\": {/,/}/ s|\"enable\": [a-z]*|\"enable\": {{ARTWORK_ENABLE}}|' -e 's|\"announce\": [a-z]*|\"announce\": {{ANNOUNCE}}|' config.json && { (sleep 3 && sed -n '/\"side_scripts\"/,/\\]/p' config.json | grep '\"' | grep -v 'side_scripts' | tr -d ' \",' | while IFS= read -r s; do [ -n \"$s\" ] && printf 'loadfs %s\\n' \"$s\" && sleep 0.3; done) & while IFS= read -r l; do printf '%s\\n' \"$l\"; [ \"$l\" = \"exit\" ] && break; done; } | exec ./omp-server {{LAUNCH_ARGS}}",
+    "stop": { "type": "command", "value": "exit" }
+  },
+  "detection": {
+    "running": [
+      "Network started on port",
+      "Legacy Network started on port",
+      "Number of vehicle models:"
+    ],
+    "stopping": [
+      "Shutting down",
+      "Server Shutting Down"
+    ]
+  },
+  "query": {
+    "protocol": "gamedig:samp",
+    "port": { "fromVariable": "SERVER_PORT" }
+  },
+  "ports": [
+    {
+      "key": "game",
+      "label": "Game",
+      "default": 7777,
+      "protocol": "udp",
+      "env": "SERVER_PORT",
+      "primary": true
+    }
+  ],
+  "configFiles": [
+    { "path": "Server/config.json", "parser": "json", "label": "Server Config" }
+  ],
+  "features": ["console", "backups", "files", "players"]
+}
