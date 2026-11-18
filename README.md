@@ -17,13 +17,15 @@
 
 ## Требования к хосту
 
-Так как сервер `open.mp` скомпилирован под 32-битную архитектуру (`x86`), на 64-битных системах Linux (Ubuntu/Debian) должны быть установлены базовые 32-битные библиотеки:
+Так как сервер `open.mp` скомпилирован под 32-битную архитектуру (`x86`), на 64-битных системах Linux (Ubuntu/Debian) должны быть установлены все необходимые 32-битные библиотеки:
 
 ```bash
 sudo dpkg --add-architecture i386
 sudo apt update
-sudo apt install -y lib32stdc++6 libc6-i386
+sudo apt install -y libc6:i386 libstdc++6:i386 zlib1g:i386 libatomic1:i386 libssl3t64:i386
 ```
+
+*(Примечание: на более старых версиях Ubuntu 22.04 / Debian 11 вместо `libssl3t64:i386` используйте пакет `libssl3:i386` или `libssl1.1:i386`).*
 
 ---
 
